@@ -26,6 +26,7 @@ namespace PosgradoBot.Dialogs.Curses
         {
             _userState = userState.CreateProperty<BotStateModel>(nameof(BotStateModel));
             _databaseService = databaseService;
+            
 
             var waterfallStep = new WaterfallStep[]
             {
@@ -124,6 +125,8 @@ namespace PosgradoBot.Dialogs.Curses
         private async Task<DialogTurnResult> SetLastName(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             var lastName = stepContext.Context.Activity.Text;
+            string msgFromPreviousDialog = (string)stepContext.ActiveDialog.State["options"];
+            preIncriptionModel.curso = msgFromPreviousDialog;
 
             var userStateModel = await _userState.GetAsync(stepContext.Context, () => new BotStateModel());
             if (userStateModel.medicalData)
@@ -192,9 +195,10 @@ namespace PosgradoBot.Dialogs.Curses
                 newInscriptionModel.date = DateTime.Now.Date;
                 newInscriptionModel.lastName = preIncriptionModel.lastName;
                 newInscriptionModel.name = preIncriptionModel.name;
-                newInscriptionModel.celular = preIncriptionModel.correo;
+                newInscriptionModel.celular = preIncriptionModel.celular;
                 newInscriptionModel.correo = preIncriptionModel.correo;
                 newInscriptionModel.ci = preIncriptionModel.ci;
+                newInscriptionModel.curso = preIncriptionModel.curso;
 
                 await _databaseService.Preinscription.AddAsync(newInscriptionModel);
                 await _databaseService.SaveAsync();
@@ -207,6 +211,7 @@ namespace PosgradoBot.Dialogs.Curses
                     $"{Environment.NewLine} Telefono: {preIncriptionModel.celular}" +
                     $"{Environment.NewLine} Correo: {preIncriptionModel.correo}" +
                     $"{Environment.NewLine} Ci: {preIncriptionModel.ci}" +
+                    $"{Environment.NewLine} Curso: {preIncriptionModel.curso}" +
                     $"{Environment.NewLine} Nombres: {preIncriptionModel.name}";
 
                 await stepContext.Context.SendActivityAsync(summaryPreinscription, cancellationToken: cancellationToken);

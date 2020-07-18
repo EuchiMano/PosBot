@@ -15,5 +15,6 @@ namespace PosgradoBot.Common.Model.Preinscription
         public string ci { get; set; }
         public string correo { get; set; }
         public string celular { get; set; }
+        public string curso { get; set; }
     }
 }

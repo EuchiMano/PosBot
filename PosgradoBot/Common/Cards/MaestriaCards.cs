@@ -34,7 +34,7 @@ namespace PosgradoBot.Common.Cards
                 Buttons = new List<CardAction>()
                 {
                     new CardAction(){Title = "Más información", Value = "https://drive.google.com/file/d/1VGCuy9vnokS-F9sNcLtgNMWefYRcQEgS/view?usp=sharing", Type = ActionTypes.DownloadFile},
-                    new CardAction(){Title = "Preinscripción", Value = "Preinscripcion", Type = ActionTypes.ImBack},
+                    new CardAction(){Title = "Preinscripción", Value = "Preinscripcion~4", Type = ActionTypes.PostBack},
                 }
             };
 
@@ -46,7 +46,7 @@ namespace PosgradoBot.Common.Cards
                 Buttons = new List<CardAction>()
                 {
                     new CardAction(){Title = "Más información", Value = "https://drive.google.com/file/d/177QzKOAEZ_Qk8rKb6_ILr0HkmXC4KKfz/view?usp=sharing", Type = ActionTypes.ImBack},
-                    new CardAction(){Title = "Preinscripción", Value = "Preinscripcion", Type = ActionTypes.ImBack},
+                    new CardAction(){Title = "Preinscripción", Value = "Preinscripcion~5", Type = ActionTypes.PostBack},
                 }
             };
 
@@ -58,7 +58,7 @@ namespace PosgradoBot.Common.Cards
                 Buttons = new List<CardAction>()
                 {
                     new CardAction(){Title = "Más información", Value = "https://drive.google.com/file/d/1W6CCWM2kR_YSwCc4J_nfwv87kCCmVrTw/view?usp=sharing", Type = ActionTypes.ImBack},
-                    new CardAction(){Title = "Preinscripción", Value = "Preinscripcion", Type = ActionTypes.ImBack},
+                    new CardAction(){Title = "Preinscripción", Value = "Preinscripcion~6", Type = ActionTypes.PostBack},
                 }
             };
 

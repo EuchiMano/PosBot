@@ -33,7 +33,7 @@ namespace PosgradoBot.Common.Cards
                 Buttons = new List<CardAction>()
                 {
                     new CardAction(){Title = "Más información", Value = "https://drive.google.com/file/d/1ho7299RvbIDLGctgNNThgwQfr5n3bu_D/view?usp=sharing", Type = ActionTypes.DownloadFile},
-                    new CardAction(){Title = "Preinscripción", Value = "Nice", DisplayText = "Preinscripcion",  Type = ActionTypes.ImBack},
+                    new CardAction(){Title = "Preinscripción", Value = "Preinscripcion~1", DisplayText = "Preinscripcion",  Type = ActionTypes.PostBack},
                 }
             };
 

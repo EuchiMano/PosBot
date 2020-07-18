@@ -30,10 +30,35 @@ namespace PosgradoBot.Dialogs.Curses
 
         private async Task<DialogTurnResult> SelectedOption(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            var selected = stepContext.Context.Activity.Value;
-            //if (selected = 1) {
-            //    return await stepContext.BeginDialogAsync(nameof(PreinscriptionDialog), cancellationToken: cancellationToken);
-            //}
+            //Preinscripcionª1
+            string selected = stepContext.Context.Activity.Text;
+            string[] dtr = selected.Split('~');
+            if (dtr[0] == "Preinscripcion")
+            {
+                switch (dtr[1])
+                {
+                    case "1":
+                        string curse = "Curso de Microsoft Teams y OneDrive";
+                        return await stepContext.BeginDialogAsync(nameof(PreinscriptionDialog), curse, cancellationToken: cancellationToken);
+                    case "2":
+                        string curse2 = "Diplomado en Educación Superior Universitaria a Distancia";
+                        return await stepContext.BeginDialogAsync(nameof(PreinscriptionDialog), curse2, cancellationToken: cancellationToken);
+                    case "3":
+                        string curse3 = "Diplomado en Planificación y Desarrollo de Competencias Profesionales en Educación Superior";
+                        return await stepContext.BeginDialogAsync(nameof(PreinscriptionDialog), curse3, cancellationToken: cancellationToken);
+                    case "4":
+                        string curse4 = "Maestría en Administración de Empresas";
+                        return await stepContext.BeginDialogAsync(nameof(PreinscriptionDialog), curse4, cancellationToken: cancellationToken);
+                    case "5":
+                        string curse5 = "Maestría en Recursos Naturales y Gestión Ambiental";
+                        return await stepContext.BeginDialogAsync(nameof(PreinscriptionDialog), curse5, cancellationToken: cancellationToken);
+                    case "6":
+                        string curse6 = "Maestría en Educación Superior Universitaria";
+                        return await stepContext.BeginDialogAsync(nameof(PreinscriptionDialog), curse6, cancellationToken: cancellationToken);
+                    default:
+                        break;
+                }
+            }
 
             return await stepContext.ContinueDialogAsync(cancellationToken: cancellationToken);
         }
