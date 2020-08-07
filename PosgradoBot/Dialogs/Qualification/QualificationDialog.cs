@@ -1,7 +1,9 @@
-﻿using Microsoft.Bot.Builder;
+﻿using Microsoft.Azure.Cosmos;
+using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Schema;
 using PosgradoBot.Common.Model.Qualification;
+using PosgradoBot.Common.Model.User;
 using PosgradoBot.Data;
 using System;
 using System.Collections.Generic;
@@ -28,6 +30,16 @@ namespace PosgradoBot.Dialogs.Qualification
 
         private async Task<DialogTurnResult> ToShowButton(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
+            //var uri = "https://posbot-cosmos.documents.azure.com:443/";
+            //var key = "WPkM156Q8wnn1NGLXnB9tLnPea1gIvPccDFKSHoNDbRcSNVIuY2Hgrw7hzdGY7MPB8Aad7M1JUXbMNy4bc6aug==";
+            //var db = "botdb";
+            //var cl = "User";
+            //List<UserModel> aea = new List<UserModel>();
+            ////aea = _databaseService.QueryAllDocument(uri,key,db,cl);
+            //aea = _databaseService.QueryAllDocument(uri,key,db,cl);
+
+
+
             return await stepContext.PromptAsync(
                 nameof(TextPrompt), 
                 new PromptOptions

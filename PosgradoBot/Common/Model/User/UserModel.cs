@@ -11,5 +11,12 @@ namespace PosgradoBot.Common.Model.User
         public string userNameChannel { get; set; }
         public string channel { get; set; }
         public DateTime registerDate { get; set; }
+        //public Queja[] Quejas { get; set; }
+
+
+        //public class Queja
+        //{
+        //    public string mensaje { get; set; }
+        //}
     }
 }

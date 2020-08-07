@@ -1,21 +1,20 @@
 ﻿using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Schema;
-using PosgradoBot.Common.Cards;
 using PosgradoBot.Data;
-using PosgradoBot.Dialogs.CreateAppointment;
+using PosgradoBot.Dialogs.Curses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace PosgradoBot.Dialogs.Curses
+namespace PosgradoBot.Dialogs.Reports
 {
-    public class CursesDialog : ComponentDialog
+    public class ReportsDialog: ComponentDialog
     {
         private IDataBaseService _databaseService;
-        public CursesDialog(IDataBaseService databaseService)
+        public ReportsDialog(IDataBaseService databaseService)
         {
             _databaseService = databaseService;
             var waterfallSteps = new WaterfallStep[]
@@ -37,27 +36,24 @@ namespace PosgradoBot.Dialogs.Curses
             {
                 switch (dtr[1])
                 {
-                    case "11":
-                        string curse = "fde53f29-589a-486b-a88f-046f5e1cc0fe";
+                    case "1":
+                        string curse = "Curso de Microsoft Teams y OneDrive";
                         return await stepContext.BeginDialogAsync(nameof(PreinscriptionDialog), curse, cancellationToken: cancellationToken);
-                    case "21":
-                        string curse2 = "e41ba2dc-5548-4bc1-8bbc-856ce14f2a99";
+                    case "2":
+                        string curse2 = "Diplomado en Educación Superior Universitaria a Distancia";
                         return await stepContext.BeginDialogAsync(nameof(PreinscriptionDialog), curse2, cancellationToken: cancellationToken);
-                    case "22":
-                        string curse3 = "c680e5d7-980d-473d-aef6-f5d47ec86ed7";
+                    case "3":
+                        string curse3 = "Diplomado en Planificación y Desarrollo de Competencias Profesionales en Educación Superior";
                         return await stepContext.BeginDialogAsync(nameof(PreinscriptionDialog), curse3, cancellationToken: cancellationToken);
-                    case "23":
-                        string curse4 = "cc3071e9-90b0-4497-84de-2cc649534444";
+                    case "4":
+                        string curse4 = "Maestría en Administración de Empresas";
                         return await stepContext.BeginDialogAsync(nameof(PreinscriptionDialog), curse4, cancellationToken: cancellationToken);
-                    case "31":
-                        string curse5 = "03498fbb-ec7c-4a21-ba57-e15277093736";
+                    case "5":
+                        string curse5 = "Maestría en Recursos Naturales y Gestión Ambiental";
                         return await stepContext.BeginDialogAsync(nameof(PreinscriptionDialog), curse5, cancellationToken: cancellationToken);
-                    case "32":
-                        string curse6 = "aacae306-392a-4abe-a502-9d6ae067bf6a";
+                    case "6":
+                        string curse6 = "Maestría en Educación Superior Universitaria";
                         return await stepContext.BeginDialogAsync(nameof(PreinscriptionDialog), curse6, cancellationToken: cancellationToken);
-                    case "33":
-                        string curse7 = "e4359b17-35c3-4ba2-b04b-1ca7c49f0c00";
-                        return await stepContext.BeginDialogAsync(nameof(PreinscriptionDialog), curse7, cancellationToken: cancellationToken);
                     default:
                         break;
                 }
@@ -85,11 +81,7 @@ namespace PosgradoBot.Dialogs.Curses
             {
                 Actions = new List<CardAction>()
                 {
-                    new CardAction(){Title = "Taller", Value = "Taller", Type = ActionTypes.ImBack},
-                    new CardAction(){Title = "Diplomado", Value = "Diplomado", Type = ActionTypes.ImBack},
-                    new CardAction(){Title = "Maestría", Value = "Maestria", Type = ActionTypes.ImBack},
-                    new CardAction(){Title = "Doctorado", Value = "Doctorado", Type = ActionTypes.ImBack},
-
+                    new CardAction(){Title = "Usuarios", Value = "Usuarios", Type = ActionTypes.ImBack},
                 }
             };
             return reply as Activity;
@@ -100,15 +92,7 @@ namespace PosgradoBot.Dialogs.Curses
             var options = stepContext.Context.Activity.Text;
             switch (options)
             {
-                case "Taller":
-                    //return await TallerCards.ToShow(stepContext, cancellationToken);
-                    await stepContext.Context.SendActivityAsync("Actualmente no tenemos cursos disponibles para Doctorados...");
-                    return await stepContext.ContinueDialogAsync(cancellationToken: cancellationToken);
-                case "Diplomado":
-                    return await DiplomadoCards.ToShow(stepContext, cancellationToken);
-                case "Maestria":
-                    return await MaestriaCards.ToShow(stepContext, cancellationToken);
-                case "Doctorado":
+                case "Usuarios":
                     await stepContext.Context.SendActivityAsync("Actualmente no tenemos cursos disponibles para Doctorados...");
                     return await stepContext.ContinueDialogAsync(cancellationToken: cancellationToken);
                 default:
@@ -132,13 +116,8 @@ namespace PosgradoBot.Dialogs.Curses
         //    qualifactionModel.qualification = options;
         //    qualifactionModel.registerDate = DateTime.Now.Date;
 
-        //    await _databaseService.Qualification.AddAsync(qualifactionModel);
+           //await _databaseService.Qualification.AddAsync(qualifactionModel);
         //    await _databaseService.SaveAsync();
-        //}
-
-        //private async Task CurseSelected(WaterfallStepContext stepContext)
-        //{
-        //    var clicked = stepContext.Context.Activity.Text;
         //}
     }
 }

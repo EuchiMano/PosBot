@@ -17,6 +17,8 @@ using Microsoft.Extensions.Hosting;
 using PosgradoBot.Data;
 using PosgradoBot.Dialogs;
 using PosgradoBot.Infrastructure.Luis;
+using PosgradoBot.Infrastructure.SendGridEmail;
+using SendGrid;
 
 namespace PosgradoBot
 {
@@ -56,6 +58,7 @@ namespace PosgradoBot
             // Create the Bot Framework Adapter with error handling enabled.
             services.AddSingleton<IBotFrameworkHttpAdapter, AdapterWithErrorHandler>();
 
+            services.AddSingleton<ISendGridEmailService, SendGridEmailService>();
             services.AddSingleton<ILuisService, Infrastructure.Luis.LuisService>();
             services.AddTransient<RootDialog>();
             // Create the bot as a transient. In this case the ASP Controller is expecting an IBot.

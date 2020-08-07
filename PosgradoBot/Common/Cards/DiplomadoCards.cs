@@ -33,8 +33,8 @@ namespace PosgradoBot.Common.Cards
                 Images = new List<CardImage> { new CardImage("https://posbotstorage.blob.core.windows.net/images/Curso.PNG") },
                 Buttons = new List<CardAction>()
                 {
-                    new CardAction(){Title = "Más información", Value = "https://drive.google.com/file/d/1rheUW7gdnNcCYXt1mUyNlhMyJaeTUwoc/view?usp=sharing", Type = ActionTypes.DownloadFile},
-                    new CardAction(){Title = "Preinscripción", Value = "Preinscripcion~2", Type = ActionTypes.PostBack},
+                    new CardAction(){Title = "Más información", Value = "https://posbotstorage.blob.core.windows.net/cursos/DESD-10.pdf", Type = ActionTypes.DownloadFile},
+                    new CardAction(){Title = "Preinscripción", Value = "Preinscripcion~21", Type = ActionTypes.PostBack},
                 }
             };
 
@@ -45,8 +45,20 @@ namespace PosgradoBot.Common.Cards
                 Images = new List<CardImage> { new CardImage("https://posbotstorage.blob.core.windows.net/images/DiplomadoEduSup.PNG") },
                 Buttons = new List<CardAction>()
                 {
-                    new CardAction(){Title = "Más información", Value = "https://drive.google.com/file/d/17CemKcOd6gGBv-tZGsOx7yP3dbhBWboW/view?usp=sharing", Type = ActionTypes.ImBack},
-                    new CardAction(){Title = "Preinscripción", Value = "Preinscripcion~3", Type = ActionTypes.PostBack},
+                    new CardAction(){Title = "Más información", Value = "https://posbotstorage.blob.core.windows.net/cursos/DPDCV-3_oficial.pdf", Type = ActionTypes.DownloadFile},
+                    new CardAction(){Title = "Preinscripción", Value = "Preinscripcion~22", Type = ActionTypes.PostBack},
+                }
+            };
+
+            var cardDiplomadoDisponible3 = new HeroCard
+            {
+                Title = "Diplomado en Seguridad y Salud en el Trabajo",
+                Subtitle = "Opciones",
+                Images = new List<CardImage> { new CardImage("https://posbotstorage.blob.core.windows.net/images/DiplomadoEduSup.PNG") },
+                Buttons = new List<CardAction>()
+                {
+                    new CardAction(){Title = "Más información", Value = "https://posbotstorage.blob.core.windows.net/cursos/DSST-3_ oficial_.pdf", Type = ActionTypes.DownloadFile},
+                    new CardAction(){Title = "Preinscripción", Value = "Preinscripcion~23", Type = ActionTypes.PostBack},
                 }
             };
 
@@ -54,6 +66,7 @@ namespace PosgradoBot.Common.Cards
             {
                 cardDiplomadoDisponible1.ToAttachment(),
                 cardDiplomadoDisponible2.ToAttachment(),
+                cardDiplomadoDisponible3.ToAttachment(),
             };
 
             var reply = MessageFactory.Attachment(optionsAttachments);

@@ -7,6 +7,6 @@ namespace PosgradoBot.Common.Model.BotState
 {
     public class BotStateModel
     {
-        public bool medicalData { get; set; }
+        public bool forms { get; set; }
     }
 }

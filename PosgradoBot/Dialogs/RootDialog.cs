@@ -4,8 +4,10 @@ using PosgradoBot.Common.Cards;
 using PosgradoBot.Data;
 using PosgradoBot.Dialogs.CreateAppointment;
 using PosgradoBot.Dialogs.Curses;
+using PosgradoBot.Dialogs.PersonalAtention;
 using PosgradoBot.Dialogs.Qualification;
 using PosgradoBot.Infrastructure.Luis;
+using PosgradoBot.Infrastructure.SendGridEmail;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,11 +20,14 @@ namespace PosgradoBot.Dialogs
     {
         private readonly ILuisService _luisService;
         private readonly IDataBaseService _databaseService;
+        private readonly ISendGridEmailService _sendGridEmailService;
 
-        public RootDialog(ILuisService luisService, IDataBaseService databaseService, UserState userState)
+        public RootDialog(ILuisService luisService, IDataBaseService databaseService, UserState userState, ISendGridEmailService sendGridEmailService)
         {
+            _sendGridEmailService = sendGridEmailService;
             _databaseService = databaseService;
             _luisService = luisService;
+
             var waterfallSteps = new WaterfallStep[]
             {
                 InitialProcess,
@@ -30,6 +35,8 @@ namespace PosgradoBot.Dialogs
             };
             AddDialog(new PreinscriptionDialog(_databaseService, userState));
             AddDialog(new QualificationDialog(_databaseService));
+            AddDialog(new PaysDialog(_databaseService));
+            AddDialog(new AgentDialog(_databaseService, _sendGridEmailService));
             //AddDialog(new CreateAppointmentDialog(_databaseService, userState));
             AddDialog(new CursesDialog(_databaseService));
             AddDialog(new TextPrompt(nameof(TextPrompt)));
@@ -69,6 +76,10 @@ namespace PosgradoBot.Dialogs
                     return await IntentPreInscripcion(stepContext, luisResult, cancellationToken);
                 case "VerCursos":
                     return await IntentVerCursos(stepContext, luisResult, cancellationToken);
+                case "AtencionPersonal":
+                    return await IntentAgente(stepContext, luisResult, cancellationToken);
+                case "Pagos":
+                    return await IntentPagos(stepContext, luisResult, cancellationToken);
                 case "None":
                     await IntentNone(stepContext, luisResult, cancellationToken);
                     break;
@@ -76,6 +87,16 @@ namespace PosgradoBot.Dialogs
                         break;
             }
             return await stepContext.NextAsync(cancellationToken: cancellationToken);
+        }
+
+        private async Task<DialogTurnResult> IntentPagos(WaterfallStepContext stepContext, RecognizerResult luisResult, CancellationToken cancellationToken)
+        {
+            return await stepContext.BeginDialogAsync(nameof(PaysDialog), cancellationToken: cancellationToken);
+        }
+
+        private async Task<DialogTurnResult> IntentAgente(WaterfallStepContext stepContext, RecognizerResult luisResult, CancellationToken cancellationToken)
+        {
+            return await stepContext.BeginDialogAsync(nameof(AgentDialog), cancellationToken: cancellationToken);
         }
 
         private async Task<DialogTurnResult> IntentVerCursos(WaterfallStepContext stepContext, RecognizerResult luisResult, CancellationToken cancellationToken)

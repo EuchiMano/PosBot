@@ -15,13 +15,13 @@ using PosgradoBot.Data;
 
 namespace PosgradoBot
 {
-    public class PosBot<T> : ActivityHandler where T: Dialog
+    public class PosBot<T> : ActivityHandler where T : Dialog
     {
         private readonly BotState _userState;
         private readonly BotState _conversationState;
         private readonly Dialog _dialog;
-        private readonly IDataBaseService _databaseService; 
-                              
+        private readonly IDataBaseService _databaseService;
+
         public PosBot(UserState userState, ConversationState conversationState, T dialog, IDataBaseService databaseService)
         {
             _userState = userState;
@@ -71,6 +71,12 @@ namespace PosgradoBot
                 await _databaseService.User.AddAsync(userModel);
                 await _databaseService.SaveAsync();
             }
+        }
+
+        private async Task QueryUsers()
+        {
+            var sqlQueryText = "SELECT User.userNameChannel FROM User";
+            
         }
     }
 }
