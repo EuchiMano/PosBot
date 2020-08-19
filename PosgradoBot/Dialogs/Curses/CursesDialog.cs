@@ -38,25 +38,25 @@ namespace PosgradoBot.Dialogs.Curses
                 switch (dtr[1])
                 {
                     case "11":
-                        string curse = "fde53f29-589a-486b-a88f-046f5e1cc0fe";
+                        string curse = "0";
                         return await stepContext.BeginDialogAsync(nameof(PreinscriptionDialog), curse, cancellationToken: cancellationToken);
                     case "21":
-                        string curse2 = "e41ba2dc-5548-4bc1-8bbc-856ce14f2a99";
+                        string curse2 = "1";
                         return await stepContext.BeginDialogAsync(nameof(PreinscriptionDialog), curse2, cancellationToken: cancellationToken);
                     case "22":
-                        string curse3 = "c680e5d7-980d-473d-aef6-f5d47ec86ed7";
+                        string curse3 = "2";
                         return await stepContext.BeginDialogAsync(nameof(PreinscriptionDialog), curse3, cancellationToken: cancellationToken);
                     case "23":
-                        string curse4 = "cc3071e9-90b0-4497-84de-2cc649534444";
+                        string curse4 = "3";
                         return await stepContext.BeginDialogAsync(nameof(PreinscriptionDialog), curse4, cancellationToken: cancellationToken);
                     case "31":
-                        string curse5 = "03498fbb-ec7c-4a21-ba57-e15277093736";
+                        string curse5 = "4";
                         return await stepContext.BeginDialogAsync(nameof(PreinscriptionDialog), curse5, cancellationToken: cancellationToken);
                     case "32":
-                        string curse6 = "aacae306-392a-4abe-a502-9d6ae067bf6a";
+                        string curse6 = "5";
                         return await stepContext.BeginDialogAsync(nameof(PreinscriptionDialog), curse6, cancellationToken: cancellationToken);
                     case "33":
-                        string curse7 = "e4359b17-35c3-4ba2-b04b-1ca7c49f0c00";
+                        string curse7 = "6";
                         return await stepContext.BeginDialogAsync(nameof(PreinscriptionDialog), curse7, cancellationToken: cancellationToken);
                     default:
                         break;
@@ -102,7 +102,7 @@ namespace PosgradoBot.Dialogs.Curses
             {
                 case "Taller":
                     //return await TallerCards.ToShow(stepContext, cancellationToken);
-                    await stepContext.Context.SendActivityAsync("Actualmente no tenemos cursos disponibles para Doctorados...");
+                    await stepContext.Context.SendActivityAsync("Actualmente no tenemos cursos disponibles para Talleres...");
                     return await stepContext.ContinueDialogAsync(cancellationToken: cancellationToken);
                 case "Diplomado":
                     return await DiplomadoCards.ToShow(stepContext, cancellationToken);

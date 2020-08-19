@@ -45,14 +45,19 @@ namespace PosgradoBot
             var conversationState = new ConversationState(storage);
             services.AddSingleton(conversationState);
 
-            services.AddDbContext<DataBaseService>(options => {
-                options.UseCosmos(
-                    Configuration["CosmosEndPoint"],
-                    Configuration["CosmosKey"],
-                    Configuration["CosmosDatabase"]
-                    );
-            });
+            //services.AddDbContext<DataBaseService>(options =>
+            //{
+            //    options.UseCosmos(
+            //        Configuration["CosmosEndPoint"],
+            //        Configuration["CosmosKey"],
+            //        Configuration["CosmosDatabase"]
+            //        );
+            //});
 
+            services.AddDbContext<DataBaseService>(options => options.UseSqlServer(
+             Configuration.GetConnectionString("BloggingDatabase")));
+
+            //UserID = posgradobot; Password = Posbot123;
             services.AddScoped<IDataBaseService, DataBaseService>();
 
             // Create the Bot Framework Adapter with error handling enabled.
@@ -85,7 +90,8 @@ namespace PosgradoBot
 
             // app.UseHttpsRedirection();
             app.UseRouting();
-            app.UseEndpoints(endpoints => {
+            app.UseEndpoints(endpoints =>
+            {
                 endpoints.MapControllers();
             });
         }

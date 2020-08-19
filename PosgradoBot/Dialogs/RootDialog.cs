@@ -33,12 +33,13 @@ namespace PosgradoBot.Dialogs
                 InitialProcess,
                 FinalProcess
             };
+            
             AddDialog(new PreinscriptionDialog(_databaseService, userState));
             AddDialog(new QualificationDialog(_databaseService));
             AddDialog(new PaysDialog(_databaseService));
             AddDialog(new AgentDialog(_databaseService, _sendGridEmailService));
-            //AddDialog(new CreateAppointmentDialog(_databaseService, userState));
             AddDialog(new CursesDialog(_databaseService));
+            
             AddDialog(new TextPrompt(nameof(TextPrompt)));
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), waterfallSteps));
             InitialDialogId = nameof(WaterfallDialog);
@@ -118,13 +119,6 @@ namespace PosgradoBot.Dialogs
         private async Task IntentSaludar(WaterfallStepContext stepContext, RecognizerResult luisResult, CancellationToken cancellationToken)
         {
             await stepContext.Context.SendActivityAsync($"Hola que gusto verte", cancellationToken: cancellationToken);
-            await stepContext.PromptAsync(
-                nameof(TextPrompt),
-                new PromptOptions { Prompt = MessageFactory.Text("Por favor ingresa tus apellidos:") },
-                cancellationToken
-            );
-            var xd = stepContext.Context.Activity.Text;
-            await stepContext.Context.SendActivityAsync($"Hola que gusto verte" + xd, cancellationToken: cancellationToken);
         }
 
         private async Task IntentAgradecer(WaterfallStepContext stepContext, RecognizerResult luisResult, CancellationToken cancellationToken)

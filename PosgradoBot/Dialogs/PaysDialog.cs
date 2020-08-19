@@ -42,7 +42,7 @@ namespace PosgradoBot.Dialogs
             if (payLast != null)
             {
                 var totalpay = payLast.cuotaUno + payLast.cuotaDos + payLast.cuotaTres + payLast.cuotaCuatro + payLast.cuotaCinco + payLast.cuotaSeis;
-                
+
 
                 if (totalpay == 3000.00)
                 {
@@ -51,21 +51,22 @@ namespace PosgradoBot.Dialogs
                 $"{Environment.NewLine} Ci: {payLast.ci}" +
                 $"{Environment.NewLine} No debes ninguna cuota";
                     await stepContext.Context.SendActivityAsync(summaryComplete, cancellationToken: cancellationToken);
-                    await stepContext.Context.SendActivityAsync("¿En qué más te puedo ayudar?", cancellationToken: cancellationToken);
+                    await stepContext.Context.SendActivityAsync("¿En qué más te puedo ayudar?. Si terminaste puedes escribir calificar para darme una puntuacion.", cancellationToken: cancellationToken);
                     return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
                 }
 
-                if (payLast.cuotaUno == 0.00) {
+                if (payLast.cuotaUno == 0.00)
+                {
                     string summaryPreinscription = $"Apellidos: {payLast.apellidos}" +
                     $"{Environment.NewLine} Nombres: {payLast.nombres}" +
                     $"{Environment.NewLine} Ci: {payLast.ci}" +
                     $"{Environment.NewLine} Te encuentras en la 1era cuota de 6 del total de 3000 Bs";
 
                     await stepContext.Context.SendActivityAsync(summaryPreinscription, cancellationToken: cancellationToken);
-                    await stepContext.Context.SendActivityAsync("¿En qué más te puedo ayudar?", cancellationToken: cancellationToken);
+                    await stepContext.Context.SendActivityAsync("¿En qué más te puedo ayudar?. Si terminaste puedes escribir calificar para darme una puntuacion.", cancellationToken: cancellationToken);
                     return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
                 }
-                if(payLast.cuotaDos == 0.00)
+                if (payLast.cuotaDos == 0.00)
                 {
                     string summaryPreinscription = $"Apellidos: {payLast.apellidos}" +
                     $"{Environment.NewLine} Nombres: {payLast.nombres}" +
@@ -73,7 +74,7 @@ namespace PosgradoBot.Dialogs
                     $"{Environment.NewLine} Te encuentras en la 2da cuota de 6 del total de 3000 Bs";
 
                     await stepContext.Context.SendActivityAsync(summaryPreinscription, cancellationToken: cancellationToken);
-                    await stepContext.Context.SendActivityAsync("¿En qué más te puedo ayudar?", cancellationToken: cancellationToken);
+                    await stepContext.Context.SendActivityAsync("¿En qué más te puedo ayudar?. Si terminaste puedes escribir calificar para darme una puntuacion.", cancellationToken: cancellationToken);
                     return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
                 }
 
@@ -85,7 +86,7 @@ namespace PosgradoBot.Dialogs
                     $"{Environment.NewLine} Te encuentras en la 3era cuota de 6 del total de 3000 Bs";
 
                     await stepContext.Context.SendActivityAsync(summaryPreinscription, cancellationToken: cancellationToken);
-                    await stepContext.Context.SendActivityAsync("¿En qué más te puedo ayudar?", cancellationToken: cancellationToken);
+                    await stepContext.Context.SendActivityAsync("¿En qué más te puedo ayudar?. Si terminaste puedes escribir calificar para darme una puntuacion.", cancellationToken: cancellationToken);
                     return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
                 }
 
@@ -97,7 +98,7 @@ namespace PosgradoBot.Dialogs
                     $"{Environment.NewLine} Te encuentras en la 4ta cuota de 6 del total de 3000 Bs";
 
                     await stepContext.Context.SendActivityAsync(summaryPreinscription, cancellationToken: cancellationToken);
-                    await stepContext.Context.SendActivityAsync("¿En qué más te puedo ayudar?", cancellationToken: cancellationToken);
+                    await stepContext.Context.SendActivityAsync("¿En qué más te puedo ayudar?. Si terminaste puedes escribir calificar para darme una puntuacion.", cancellationToken: cancellationToken);
                     return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
                 }
 
@@ -109,7 +110,7 @@ namespace PosgradoBot.Dialogs
                     $"{Environment.NewLine} Te encuentras en la 5ta cuota de 6 del total de 3000 Bs";
 
                     await stepContext.Context.SendActivityAsync(summaryPreinscription, cancellationToken: cancellationToken);
-                    await stepContext.Context.SendActivityAsync("¿En qué más te puedo ayudar?", cancellationToken: cancellationToken);
+                    await stepContext.Context.SendActivityAsync("¿En qué más te puedo ayudar?. Si terminaste puedes escribir calificar para darme una puntuacion.", cancellationToken: cancellationToken);
                     return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
                 }
 
@@ -121,12 +122,12 @@ namespace PosgradoBot.Dialogs
                     $"{Environment.NewLine} Te encuentras en la ultima cuota del total de 3000 Bs";
 
                     await stepContext.Context.SendActivityAsync(summaryPreinscription, cancellationToken: cancellationToken);
-                    await stepContext.Context.SendActivityAsync("¿En qué más te puedo ayudar?", cancellationToken: cancellationToken);
-                    return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
+                    await stepContext.Context.SendActivityAsync("¿En qué más te puedo ayudar?. Si terminaste puedes escribir calificar para darme una puntuacion.", cancellationToken: cancellationToken);
+                    return await stepContext.ContinueDialogAsync(cancellationToken: cancellationToken);
                 }
             }
             await stepContext.Context.SendActivityAsync("Lo siento, no he podido encontrar tu numero de carnet en mi base de datos:", cancellationToken: cancellationToken);
-            return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
+            return await stepContext.ContinueDialogAsync(cancellationToken: cancellationToken);
         }
     }
 }

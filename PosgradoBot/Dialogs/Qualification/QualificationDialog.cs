@@ -2,6 +2,7 @@
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Schema;
+using Microsoft.EntityFrameworkCore;
 using PosgradoBot.Common.Model.Qualification;
 using PosgradoBot.Common.Model.User;
 using PosgradoBot.Data;
@@ -16,6 +17,8 @@ namespace PosgradoBot.Dialogs.Qualification
     public class QualificationDialog: ComponentDialog
     {
         private IDataBaseService _databaseService;
+        //private DataBaseService _databaseService1;
+
         public QualificationDialog(IDataBaseService databaseService)
         {
             _databaseService = databaseService;
@@ -57,11 +60,11 @@ namespace PosgradoBot.Dialogs.Qualification
             { 
                 Actions = new List<CardAction>()
                 {
-                    new CardAction(){Title = "1⭐", Value = "1⭐", Type = ActionTypes.ImBack},
-                    new CardAction(){Title = "2⭐", Value = "2⭐", Type = ActionTypes.ImBack},
-                    new CardAction(){Title = "3⭐", Value = "3⭐", Type = ActionTypes.ImBack},
-                    new CardAction(){Title = "4⭐", Value = "4⭐", Type = ActionTypes.ImBack},
-                    new CardAction(){Title = "5⭐", Value = "5⭐", Type = ActionTypes.ImBack},
+                    new CardAction(){Title = "1⭐", Value = "1", Type = ActionTypes.ImBack},
+                    new CardAction(){Title = "2⭐", Value = "2", Type = ActionTypes.ImBack},
+                    new CardAction(){Title = "3⭐", Value = "3", Type = ActionTypes.ImBack},
+                    new CardAction(){Title = "4⭐", Value = "4", Type = ActionTypes.ImBack},
+                    new CardAction(){Title = "5⭐", Value = "5", Type = ActionTypes.ImBack},
                 }   
             };
             return reply as Activity;
@@ -80,14 +83,19 @@ namespace PosgradoBot.Dialogs.Qualification
 
         private async Task SaveQualification(WaterfallStepContext stepContext, string options)
         {
-            var qualifactionModel = new QualificationModel();
-            qualifactionModel.id = Guid.NewGuid().ToString();
-            qualifactionModel.idUser = stepContext.Context.Activity.From.Id;
-            qualifactionModel.qualification = options;
-            qualifactionModel.registerDate = DateTime.Now.Date;
+            var id = stepContext.Context.Activity.From.Id;
+            var userlast = await _databaseService.User.FirstOrDefaultAsync(x => x.idChannel == id);
 
-            await _databaseService.Qualification.AddAsync(qualifactionModel);
-            await _databaseService.SaveAsync();
+            var qualifactionModel = new QualificationModel();
+            qualifactionModel.idUser = userlast.id;
+            qualifactionModel.qualification = options;
+            qualifactionModel.registerDate = DateTime.Now;
+
+            _databaseService.Qualification.Add(qualifactionModel);
+            _databaseService.SaveChangesSQL();
+
         }
+
+        
     }
 }

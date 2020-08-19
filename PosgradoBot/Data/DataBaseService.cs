@@ -23,17 +23,20 @@ namespace PosgradoBot.Data
     {
         //CosmosContainer 
         //private Container container;
-       
+
+
+
         public DataBaseService(DbContextOptions options) : base(options)
         {
-            Database.EnsureCreatedAsync();
-
+            
+            //Database.EnsureCreatedAsync();
         }
 
-        public DataBaseService()
-        {
-            Database.EnsureCreatedAsync();
-        }
+        //public DataBaseService()
+        //{
+        //    //Database.EnsureCreatedAsync();
+        //    DataBaseService context = new DataBaseService();
+        //}
 
         public DbSet<UserModel> User { get; set; }
         public DbSet<QualificationModel> Qualification { get; set; }
@@ -47,17 +50,21 @@ namespace PosgradoBot.Data
             return (await SaveChangesAsync() > 0);
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        public int SaveChangesSQL()
         {
-            modelBuilder.Entity<UserModel>().ToContainer("User").HasPartitionKey("channel").HasNoDiscriminator().HasKey("id");
-            modelBuilder.Entity<QualificationModel>().ToContainer("Qualification").HasPartitionKey("idUser").HasNoDiscriminator().HasKey("id");
-            modelBuilder.Entity<PreinscriptionModel>().ToContainer("Preinscription").HasPartitionKey("idUser").HasNoDiscriminator().HasKey("id");
-            modelBuilder.Entity<TicketModel>().ToContainer("Ticket").HasPartitionKey("idUser").HasNoDiscriminator().HasKey("id");
-            modelBuilder.Entity<Curses>().ToContainer("Curses").HasPartitionKey("title").HasNoDiscriminator().HasKey("id");
-            modelBuilder.Entity<PaysModel>().ToContainer("Pays").HasPartitionKey("ci").HasNoDiscriminator().HasKey("id");
+            return SaveChanges();
         }
 
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    base.OnModelCreating(modelBuilder);
+        //}
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder
+                .UseSqlServer(@"Server=bdposbot.database.windows.net;Database=bdposbot;User Id=posgradobot;Password=Posbot123;Trusted_Connection=False;Encrypt=True;");
+        }
 
         //public async Task<List<UserModel>> QueryAllDocument()
         //{

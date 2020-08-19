@@ -1,6 +1,7 @@
 ﻿using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Schema;
+using Microsoft.EntityFrameworkCore;
 using PosgradoBot.Common.Model.Tickets;
 using PosgradoBot.Common.Model.User;
 using PosgradoBot.Data;
@@ -42,8 +43,8 @@ namespace PosgradoBot.Dialogs.PersonalAtention
             var name = stepContext.Context.Activity.From.Name;
             await stepContext.Context.SendActivityAsync("Seras atendido por un agente en cualquier momento");
             await SaveTicket(stepContext, description);
-            //await SendEmail(name, description);
-            return await stepContext.ContinueDialogAsync(cancellationToken: cancellationToken);
+            await SendEmail(name, description);
+            return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
         }
 
         private async Task<DialogTurnResult> ToShowButton(WaterfallStepContext stepContext, CancellationToken cancellationToken)
@@ -84,17 +85,18 @@ namespace PosgradoBot.Dialogs.PersonalAtention
                 );
             }
             await stepContext.Context.SendActivityAsync("Vale, vuelve a preguntar cuando gustes, estoy para ayudarte.", cancellationToken: cancellationToken);
-            return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
+            return await stepContext.ContinueDialogAsync(cancellationToken: cancellationToken);
         }
 
         private async Task SendEmail(string name, string description)
         {
             var time = DateTime.Now;
-            string contentEmail = $"Hola Encargado, se creo un ticket con la siguiente informacion:" +
-                $"<br>Nombre del usuario: {name}" +
-                $"<br>Fecha: {time.ToShortDateString()}" +
-                $"<br>Hora: {time.ToShortTimeString()}" +
-                $"<br>Descripción: {description}";
+            string contentEmail = $"<h1>Ticket</h1>" +
+                $"<p style='font-size:120 %;'>Hola Encargado, se creo un ticket con la siguiente información:</p>" +
+                $"<p style='font-size:120 %;'><b>Nombre del usuario:</b> {name}</p>" +
+                $"<p style='font-size:120 %;'><b>Fecha:</b> {time.ToShortDateString()}</p>" +
+                $"<p style='font-size:120 %;'><b>Hora:</b> {time.ToShortTimeString()}</p>" +
+                $"<p style='font-size:120 %;'><b>Descripción:</b> {description}</p>";
 
             await _sendGridEmailService.Execute(
                 "marce.ps@outlook.es",
@@ -109,14 +111,15 @@ namespace PosgradoBot.Dialogs.PersonalAtention
 
         private async Task SaveTicket(WaterfallStepContext stepContext, string description)
         {
+            var id = stepContext.Context.Activity.From.Id;
+            var userlast = await _databaseService.User.FirstOrDefaultAsync(x => x.idChannel == id);
             var ticketModel = new TicketModel();
-            ticketModel.id = Guid.NewGuid().ToString();
-            ticketModel.idUser = stepContext.Context.Activity.From.Id;
+            ticketModel.idUser = userlast.id;
             ticketModel.registerDate = DateTime.Now;
             ticketModel.description = description;
 
-            await _databaseService.Ticket.AddAsync(ticketModel);
-            await _databaseService.SaveAsync();
+            _databaseService.Ticket.Add(ticketModel);
+            _databaseService.SaveChangesSQL();
         }
     }
 }

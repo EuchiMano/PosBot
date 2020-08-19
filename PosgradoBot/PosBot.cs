@@ -49,7 +49,7 @@ namespace PosgradoBot
 
         protected override async Task OnMessageActivityAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
         {
-            await SaveUser(turnContext);
+            await SaveUserAsync(turnContext);
             await _dialog.RunAsync(
                 turnContext,
                 _conversationState.CreateProperty<DialogState>(nameof(DialogState)),
@@ -57,26 +57,20 @@ namespace PosgradoBot
                 );
         }
 
-        private async Task SaveUser(ITurnContext<IMessageActivity> turnContext)
+        private async Task SaveUserAsync(ITurnContext<IMessageActivity> turnContext)
         {
             var userModel = new UserModel();
-            userModel.id = turnContext.Activity.From.Id;
+            userModel.idChannel = turnContext.Activity.From.Id;
             userModel.userNameChannel = turnContext.Activity.From.Name;
             userModel.channel = turnContext.Activity.ChannelId;
-            userModel.registerDate = DateTime.Now.Date;
+            userModel.registerDate = DateTime.Now;
 
-            var user = await _databaseService.User.FirstOrDefaultAsync(x => x.id == turnContext.Activity.From.Id);
+            var user = await _databaseService.User.FirstOrDefaultAsync(x => x.idChannel == turnContext.Activity.From.Id);
             if (user == null)
             {
-                await _databaseService.User.AddAsync(userModel);
-                await _databaseService.SaveAsync();
+                _databaseService.User.Add(userModel);
+                _databaseService.SaveChangesSQL();
             }
-        }
-
-        private async Task QueryUsers()
-        {
-            var sqlQueryText = "SELECT User.userNameChannel FROM User";
-            
         }
     }
 }

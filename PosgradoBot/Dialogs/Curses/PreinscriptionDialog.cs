@@ -37,13 +37,6 @@ namespace PosgradoBot.Dialogs.Curses
                 SetLastNameM,
                 SetNames,
                 SetCi,
-                SetCiEmi,
-                SetCorreo,
-                SetFechaNac,
-                SetLugarNac,
-                SetDireccion,
-                SetProfesion,
-                SetEstCivil,
                 SetTelefono,
                 Validation,
                 SetType,
@@ -126,32 +119,29 @@ namespace PosgradoBot.Dialogs.Curses
             if (userStateModel.forms)
             {
                 //Save Data Reusing Forms
-                string userId = stepContext.Context.Activity.From.Id;
-                var preInscriptionModelFirst = await _databaseService.Preinscription.FirstOrDefaultAsync(x => x.id == userId);
+                string userIdform = stepContext.Context.Activity.From.Id;
+
+                var preUserform = await _databaseService.User.FirstOrDefaultAsync(x => x.idChannel == userIdform);
+                var preInscriptionModelFirst = await _databaseService.Preinscription.FirstOrDefaultAsync(x => x.idUser == preUserform.id);
+                
                 var newInscriptionModelR = new PreinscriptionModel();
-                newInscriptionModelR.id = Guid.NewGuid().ToString();
-                newInscriptionModelR.idUser = stepContext.Context.Activity.From.Id;
+                newInscriptionModelR.idUser = preInscriptionModelFirst.idUser;
                 newInscriptionModelR.idCurse = preIncriptionModel.idCurse;
+                
                 newInscriptionModelR.apellidoP = preInscriptionModelFirst.apellidoP;
                 newInscriptionModelR.apellidoM = preInscriptionModelFirst.apellidoM;
                 newInscriptionModelR.names = preInscriptionModelFirst.names;
                 newInscriptionModelR.ci = preInscriptionModelFirst.ci;
-                newInscriptionModelR.ciemi = preInscriptionModelFirst.ciemi;
-                newInscriptionModelR.correo = preInscriptionModelFirst.correo;
-                newInscriptionModelR.fechanac = preInscriptionModelFirst.fechanac;
-                newInscriptionModelR.lugarnac = preInscriptionModelFirst.lugarnac;
-                newInscriptionModelR.direccion = preInscriptionModelFirst.direccion;
-                newInscriptionModelR.profesion = preInscriptionModelFirst.profesion;
-                newInscriptionModelR.estcivil = preInscriptionModelFirst.estcivil;
                 newInscriptionModelR.celular = preInscriptionModelFirst.celular;
                 newInscriptionModelR.grado = preInscriptionModelFirst.grado;
                 newInscriptionModelR.fuerza = preInscriptionModelFirst.fuerza;
                 newInscriptionModelR.codigoexemi = preInscriptionModelFirst.codigoexemi;
                 newInscriptionModelR.excarrera = preInscriptionModelFirst.excarrera;
                 newInscriptionModelR.fechaegreso = preInscriptionModelFirst.fechaegreso;
-
+               
                 await _databaseService.Preinscription.AddAsync(newInscriptionModelR);
                 await _databaseService.SaveAsync();
+                
 
                 await stepContext.Context.SendActivityAsync("Tu preinscripcion se guardo con exito.", cancellationToken: cancellationToken);
                 await stepContext.Context.SendActivityAsync("¿En que mas puedo ayudarte?", cancellationToken: cancellationToken);
@@ -174,22 +164,17 @@ namespace PosgradoBot.Dialogs.Curses
                 preIncriptionModel.fechaegreso = fechaegre;
             }
 
+            string userId = stepContext.Context.Activity.From.Id;
+            var preUser = await _databaseService.User.FirstOrDefaultAsync(x => x.idChannel == userId);
+
             //Save Preinscription
             var newInscriptionModel = new PreinscriptionModel();
-            newInscriptionModel.id = Guid.NewGuid().ToString();
-            newInscriptionModel.idUser = stepContext.Context.Activity.From.Id;
+            newInscriptionModel.idUser = preUser.id;
             newInscriptionModel.idCurse = preIncriptionModel.idCurse;
             newInscriptionModel.apellidoP = preIncriptionModel.apellidoP;
             newInscriptionModel.apellidoM = preIncriptionModel.apellidoM;
             newInscriptionModel.names = preIncriptionModel.names;
             newInscriptionModel.ci = preIncriptionModel.ci;
-            newInscriptionModel.ciemi = preIncriptionModel.ciemi;
-            newInscriptionModel.correo = preIncriptionModel.correo;
-            newInscriptionModel.fechanac = preIncriptionModel.fechanac;
-            newInscriptionModel.lugarnac = preIncriptionModel.lugarnac;
-            newInscriptionModel.direccion = preIncriptionModel.direccion;
-            newInscriptionModel.profesion = preIncriptionModel.profesion;
-            newInscriptionModel.estcivil = preIncriptionModel.estcivil;
             newInscriptionModel.celular = preIncriptionModel.celular;
             newInscriptionModel.grado = preIncriptionModel.grado;
             newInscriptionModel.fuerza = preIncriptionModel.fuerza;
@@ -395,132 +380,12 @@ namespace PosgradoBot.Dialogs.Curses
             }
             else
             {
-                var estcivil = stepContext.Context.Activity.Text;
-                preIncriptionModel.estcivil = estcivil;
-
-                return await stepContext.PromptAsync(
-                    nameof(TextPrompt),
-                    new PromptOptions { Prompt = MessageFactory.Text("Por favor escribe tu número de telefono o celular de contacto:") },
-                    cancellationToken
-                );
-            }
-        }
-
-        private async Task<DialogTurnResult> SetEstCivil(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
-            var userStateModel = await _userState.GetAsync(stepContext.Context, () => new BotStateModel());
-            if (userStateModel.forms)
-            {
-                return await stepContext.NextAsync(cancellationToken: cancellationToken);
-            }
-            else
-            {
-                var profesion = stepContext.Context.Activity.Text;
-                preIncriptionModel.profesion = profesion;
-
-                return await stepContext.PromptAsync(
-                    nameof(TextPrompt),
-                    new PromptOptions { Prompt = MessageFactory.Text("Por favor escribe tu estado civil:") },
-                    cancellationToken
-                );
-            }
-        }
-
-        private async Task<DialogTurnResult> SetProfesion(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
-            var userStateModel = await _userState.GetAsync(stepContext.Context, () => new BotStateModel());
-            if (userStateModel.forms)
-            {
-                return await stepContext.NextAsync(cancellationToken: cancellationToken);
-            }
-            else
-            {
-                var direccion = stepContext.Context.Activity.Text;
-                preIncriptionModel.direccion = direccion;
-
-                return await stepContext.PromptAsync(
-                    nameof(TextPrompt),
-                    new PromptOptions { Prompt = MessageFactory.Text("Por favor escribe tu profesión:") },
-                    cancellationToken
-                );
-            }
-        }
-
-        private async Task<DialogTurnResult> SetDireccion(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
-            var userStateModel = await _userState.GetAsync(stepContext.Context, () => new BotStateModel());
-            if (userStateModel.forms)
-            {
-                return await stepContext.NextAsync(cancellationToken: cancellationToken);
-            }
-            else
-            {
-                var lugarnac = stepContext.Context.Activity.Text;
-                preIncriptionModel.lugarnac = lugarnac;
-
-                return await stepContext.PromptAsync(
-                    nameof(TextPrompt),
-                    new PromptOptions { Prompt = MessageFactory.Text("Por favor ingresa tu direccion:") },
-                    cancellationToken
-                );
-            }
-        }
-
-        private async Task<DialogTurnResult> SetLugarNac(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
-            var userStateModel = await _userState.GetAsync(stepContext.Context, () => new BotStateModel());
-            if (userStateModel.forms)
-            {
-                return await stepContext.NextAsync(cancellationToken: cancellationToken);
-            }
-            else
-            {
-                var fechanac = stepContext.Context.Activity.Text;
-                preIncriptionModel.fechanac = fechanac;
-
-                return await stepContext.PromptAsync(
-                    nameof(TextPrompt),
-                    new PromptOptions { Prompt = MessageFactory.Text("Por favor ingresa tu lugar de nacimiento:") },
-                    cancellationToken
-                );
-            }
-        }
-
-        private async Task<DialogTurnResult> SetFechaNac(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
-            var userStateModel = await _userState.GetAsync(stepContext.Context, () => new BotStateModel());
-            if (userStateModel.forms)
-            {
-                return await stepContext.NextAsync(cancellationToken: cancellationToken);
-            }
-            else
-            {
-                var correo = stepContext.Context.Activity.Text;
-                preIncriptionModel.correo = correo;
-
-                return await stepContext.PromptAsync(
-                    nameof(TextPrompt),
-                    new PromptOptions { Prompt = MessageFactory.Text("Por favor ingresa tu fecha de nacimiento Día/Mes/Año:") },
-                    cancellationToken
-                );
-            }
-        }
-
-        private async Task<DialogTurnResult> SetCiEmi(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
-            var userStateModel = await _userState.GetAsync(stepContext.Context, () => new BotStateModel());
-            if (userStateModel.forms)
-            {
-                return await stepContext.NextAsync(cancellationToken: cancellationToken);
-            }
-            else
-            {
                 var ci = stepContext.Context.Activity.Text;
                 preIncriptionModel.ci = ci;
 
                 return await stepContext.PromptAsync(
                     nameof(TextPrompt),
-                    new PromptOptions { Prompt = MessageFactory.Text("Por favor ingresa en que departamento se emitio el carnet:") },
+                    new PromptOptions { Prompt = MessageFactory.Text("Por favor escribe tu número de telefono o celular de contacto:") },
                     cancellationToken
                 );
             }
@@ -541,46 +406,6 @@ namespace PosgradoBot.Dialogs.Curses
                 return await stepContext.PromptAsync(
                     nameof(TextPrompt),
                     new PromptOptions { Prompt = MessageFactory.Text("Por favor ingresa tu apellido materno:") },
-                    cancellationToken
-                );
-            }
-        }
-
-        private async Task<DialogTurnResult> SetCelular(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
-            var userStateModel = await _userState.GetAsync(stepContext.Context, () => new BotStateModel());
-            if (userStateModel.forms)
-            {
-                return await stepContext.NextAsync(cancellationToken: cancellationToken);
-            }
-            else
-            {
-                var correo = stepContext.Context.Activity.Text;
-                preIncriptionModel.correo = correo;
-
-                return await stepContext.PromptAsync(
-                    nameof(TextPrompt),
-                    new PromptOptions { Prompt = MessageFactory.Text("Por favor ingresa tu numero de celular o telefono:") },
-                    cancellationToken
-                );
-            }
-        }
-
-        private async Task<DialogTurnResult> SetCorreo(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
-            var userStateModel = await _userState.GetAsync(stepContext.Context, () => new BotStateModel());
-            if (userStateModel.forms)
-            {
-                return await stepContext.NextAsync(cancellationToken: cancellationToken);
-            }
-            else
-            {
-                var ciemi = stepContext.Context.Activity.Text;
-                preIncriptionModel.ciemi = ciemi;
-
-                return await stepContext.PromptAsync(
-                    nameof(TextPrompt),
-                    new PromptOptions { Prompt = MessageFactory.Text("Por favor ingresa tu correo:") },
                     cancellationToken
                 );
             }
@@ -629,7 +454,7 @@ namespace PosgradoBot.Dialogs.Curses
         private async Task<DialogTurnResult> SetLastNameP(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             string msgFromPreviousDialog = (string)stepContext.ActiveDialog.State["options"];
-            preIncriptionModel.idCurse = msgFromPreviousDialog;
+            preIncriptionModel.idCurse = int.Parse(msgFromPreviousDialog);
 
             var userStateModel = await _userState.GetAsync(stepContext.Context, () => new BotStateModel());
             if (userStateModel.forms)

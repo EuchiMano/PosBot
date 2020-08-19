@@ -21,6 +21,9 @@ namespace PosgradoBot.Data
         DbSet<Curses> Curses { get; set; }
         DbSet<PaysModel> Pays { get; set; }
         Task<bool> SaveAsync();
+        int SaveChangesSQL();
+
+
         //Task<List<UserModel>> QueryItemsAsync();
         //List<UserModel> QueryAllDocument(string Uri, string Key, string DatabaseName, string CollectionName);
     }

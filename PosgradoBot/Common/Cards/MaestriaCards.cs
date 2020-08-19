@@ -30,7 +30,7 @@ namespace PosgradoBot.Common.Cards
             {
                 Title = "Maestría en Administración de Empresas",
                 Subtitle = "Opciones",
-                Images = new List<CardImage> { new CardImage("https://posbotstorage.blob.core.windows.net/images/Curso.PNG") },
+                Images = new List<CardImage> { new CardImage("https://posbot1storage.blob.core.windows.net/cursos/MAE-3_%20oficial.pdf") },
                 Buttons = new List<CardAction>()
                 {
                     new CardAction(){Title = "Más información", Value = "https://posbotstorage.blob.core.windows.net/cursos/MAE-3_ oficial.pdf", Type = ActionTypes.DownloadFile},
@@ -42,7 +42,7 @@ namespace PosgradoBot.Common.Cards
             {
                 Title = "Maestría en Recursos Naturales y Gestión Ambiental",
                 Subtitle = "Opciones",
-                Images = new List<CardImage> { new CardImage("https://posbotstorage.blob.core.windows.net/images/DiplomadoEduSup.PNG") },
+                Images = new List<CardImage> { new CardImage("https://posbot1storage.blob.core.windows.net/cursos/MAGA-4_oficial.pdf") },
                 Buttons = new List<CardAction>()
                 {
                     new CardAction(){Title = "Más información", Value = "https://posbotstorage.blob.core.windows.net/cursos/MAGA-4_oficial.pdf", Type = ActionTypes.DownloadFile},
@@ -54,7 +54,7 @@ namespace PosgradoBot.Common.Cards
             {
                 Title = "Maestría en Educación Superior Universitaria",
                 Subtitle = "Opciones",
-                Images = new List<CardImage> { new CardImage("https://posbotstorage.blob.core.windows.net/images/DiplomadoEduSup.PNG") },
+                Images = new List<CardImage> { new CardImage("https://posbot1storage.blob.core.windows.net/cursos/MESU-10_oficial.pdf") },
                 Buttons = new List<CardAction>()
                 {
                     new CardAction(){Title = "Más información", Value = "https://posbotstorage.blob.core.windows.net/cursos/MESU-10_oficial.pdf", Type = ActionTypes.DownloadFile},

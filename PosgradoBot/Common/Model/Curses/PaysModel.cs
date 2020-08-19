@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -7,7 +9,9 @@ namespace PosgradoBot.Common.Model.Curses
 {
     public class PaysModel
     {
-        public string id { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int id { get; set; }
         public string ci { get; set; }
         public string apellidos { get; set; }
         public string nombres { get; set; }
