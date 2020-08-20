@@ -17,6 +17,7 @@ using Microsoft.Extensions.Hosting;
 using PosgradoBot.Data;
 using PosgradoBot.Dialogs;
 using PosgradoBot.Infrastructure.Luis;
+using PosgradoBot.Infrastructure.QnAMakerAI;
 using PosgradoBot.Infrastructure.SendGridEmail;
 using SendGrid;
 
@@ -65,6 +66,7 @@ namespace PosgradoBot
 
             services.AddSingleton<ISendGridEmailService, SendGridEmailService>();
             services.AddSingleton<ILuisService, Infrastructure.Luis.LuisService>();
+            services.AddSingleton<IQnAMakerAIService, QnAMakerAIService>();
             services.AddTransient<RootDialog>();
             // Create the bot as a transient. In this case the ASP Controller is expecting an IBot.
             services.AddTransient<IBot, PosBot<RootDialog>>();

@@ -7,6 +7,7 @@ using PosgradoBot.Dialogs.Curses;
 using PosgradoBot.Dialogs.PersonalAtention;
 using PosgradoBot.Dialogs.Qualification;
 using PosgradoBot.Infrastructure.Luis;
+using PosgradoBot.Infrastructure.QnAMakerAI;
 using PosgradoBot.Infrastructure.SendGridEmail;
 using System;
 using System.Collections.Generic;
@@ -21,9 +22,11 @@ namespace PosgradoBot.Dialogs
         private readonly ILuisService _luisService;
         private readonly IDataBaseService _databaseService;
         private readonly ISendGridEmailService _sendGridEmailService;
+        private readonly IQnAMakerAIService _qnaMakerAIService;
 
-        public RootDialog(ILuisService luisService, IDataBaseService databaseService, UserState userState, ISendGridEmailService sendGridEmailService)
+        public RootDialog(ILuisService luisService, IDataBaseService databaseService, UserState userState, ISendGridEmailService sendGridEmailService, IQnAMakerAIService qnaMakerAIService)
         {
+            _qnaMakerAIService = qnaMakerAIService;
             _sendGridEmailService = sendGridEmailService;
             _databaseService = databaseService;
             _luisService = luisService;
@@ -54,38 +57,45 @@ namespace PosgradoBot.Dialogs
         private async Task<DialogTurnResult> ManageIntentions(WaterfallStepContext stepContext, RecognizerResult luisResult, CancellationToken cancellationToken)
         {
             var topIntent = luisResult.GetTopScoringIntent();
-            switch (topIntent.intent)
+
+            if (topIntent.score > 0.5)
             {
-                case "Saludar":
-                    await IntentSaludar(stepContext, luisResult, cancellationToken);
-                    break;
-                case "Agradecer":
-                    await IntentAgradecer(stepContext, luisResult, cancellationToken);
-                    break;
-                case "Despedir":
-                    await IntentDespedir(stepContext, luisResult, cancellationToken);
-                    break;
-                case "VerOpciones":
-                    await IntentVerOpciones(stepContext, luisResult, cancellationToken);
-                    break;
-                case "VerCentroContacto":
-                    await IntentVerCentroContacto(stepContext, luisResult, cancellationToken);
-                    break;
-                case "Calificar":
-                    return await IntentCalificar(stepContext, luisResult, cancellationToken);
-                case "PreInscripcion":
-                    return await IntentPreInscripcion(stepContext, luisResult, cancellationToken);
-                case "VerCursos":
-                    return await IntentVerCursos(stepContext, luisResult, cancellationToken);
-                case "AtencionPersonal":
-                    return await IntentAgente(stepContext, luisResult, cancellationToken);
-                case "Pagos":
-                    return await IntentPagos(stepContext, luisResult, cancellationToken);
-                case "None":
-                    await IntentNone(stepContext, luisResult, cancellationToken);
-                    break;
-                default:
+                switch (topIntent.intent)
+                {
+                    case "Saludar":
+                        await IntentSaludar(stepContext, luisResult, cancellationToken);
                         break;
+                    case "Agradecer":
+                        await IntentAgradecer(stepContext, luisResult, cancellationToken);
+                        break;
+                    case "Despedir":
+                        await IntentDespedir(stepContext, luisResult, cancellationToken);
+                        break;
+                    case "VerOpciones":
+                        await IntentVerOpciones(stepContext, luisResult, cancellationToken);
+                        break;
+                    case "VerCentroContacto":
+                        await IntentVerCentroContacto(stepContext, luisResult, cancellationToken);
+                        break;
+                    case "Calificar":
+                        return await IntentCalificar(stepContext, luisResult, cancellationToken);
+                    case "PreInscripcion":
+                        return await IntentPreInscripcion(stepContext, luisResult, cancellationToken);
+                    case "VerCursos":
+                        return await IntentVerCursos(stepContext, luisResult, cancellationToken);
+                    case "AtencionPersonal":
+                        return await IntentAgente(stepContext, luisResult, cancellationToken);
+                    case "Pagos":
+                        return await IntentPagos(stepContext, luisResult, cancellationToken);
+                    case "None":
+                        await IntentNone(stepContext, luisResult, cancellationToken);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else {
+                await IntentNone(stepContext, luisResult, cancellationToken);
             }
             return await stepContext.NextAsync(cancellationToken: cancellationToken);
         }
@@ -153,7 +163,20 @@ namespace PosgradoBot.Dialogs
 
         private async Task IntentNone(WaterfallStepContext stepContext, RecognizerResult luisResult, CancellationToken cancellationToken)
         {
-            await stepContext.Context.SendActivityAsync("No entiendo lo que me dices.", cancellationToken: cancellationToken);
+            var resultQnA = await _qnaMakerAIService._qnaMakerResult.GetAnswersAsync(stepContext.Context);
+            var score = resultQnA.FirstOrDefault().Score;
+            string response = resultQnA.FirstOrDefault()?.Answer;
+
+            if (score >= 0.5)
+            {
+                await stepContext.Context.SendActivityAsync(response, cancellationToken: cancellationToken);
+            }
+            else {
+                await stepContext.Context.SendActivityAsync("No entiendo lo que me dices.", cancellationToken: cancellationToken);
+                //await Task.Delay(1000);
+                //await IntentVerOpciones(stepContext, luisResult, cancellationToken);
+            }
+            //await stepContext.ContinueDialogAsync();
         }
         #endregion
 
