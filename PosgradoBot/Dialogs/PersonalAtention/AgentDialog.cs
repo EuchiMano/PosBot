@@ -99,7 +99,7 @@ namespace PosgradoBot.Dialogs.PersonalAtention
                 $"<p style='font-size:120 %;'><b>Descripción:</b> {description}</p>";
 
             await _sendGridEmailService.Execute(
-                "marce.ps@outlook.es",
+                "marceps@outlook.es",
                 "Chatbot Posgrado Service",
                 "marce.ps666@gmail.com",
                 "Encargado",
