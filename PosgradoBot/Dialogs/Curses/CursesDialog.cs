@@ -62,6 +62,9 @@ namespace PosgradoBot.Dialogs.Curses
                         break;
                 }
             }
+            if (selected == "atras" ) {
+                return await stepContext.BeginDialogAsync(nameof(CursesDialog), cancellationToken: cancellationToken);
+            }
 
             return await stepContext.ContinueDialogAsync(cancellationToken: cancellationToken);
         }
@@ -80,7 +83,7 @@ namespace PosgradoBot.Dialogs.Curses
 
         private Activity CreateButtonsQualification()
         {
-            var reply = MessageFactory.Text("Selecciona el nivel de curso:");
+            var reply = MessageFactory.Text("Ok. Primero necesito que selecciones el nivel de estudio para buscar los cursos disponibles: ");
             reply.SuggestedActions = new SuggestedActions()
             {
                 Actions = new List<CardAction>()
@@ -89,7 +92,7 @@ namespace PosgradoBot.Dialogs.Curses
                     new CardAction(){Title = "Diplomado", Value = "Diplomado", Type = ActionTypes.ImBack},
                     new CardAction(){Title = "Maestría", Value = "Maestria", Type = ActionTypes.ImBack},
                     new CardAction(){Title = "Doctorado", Value = "Doctorado", Type = ActionTypes.ImBack},
-
+                    new CardAction(){Title = "Atras", Value = "Atras", Type = ActionTypes.ImBack},
                 }
             };
             return reply as Activity;
@@ -103,14 +106,24 @@ namespace PosgradoBot.Dialogs.Curses
                 case "Taller":
                     //return await TallerCards.ToShow(stepContext, cancellationToken);
                     await stepContext.Context.SendActivityAsync("Actualmente no tenemos cursos disponibles para Talleres...");
-                    return await stepContext.ContinueDialogAsync(cancellationToken: cancellationToken);
+                    return await stepContext.BeginDialogAsync(nameof(CursesDialog), cancellationToken: cancellationToken);
                 case "Diplomado":
+                    await stepContext.Context.SendActivityAsync($"Puedes escribir la palabra ATRAS para volver a seleccionar el nivel de curso...", cancellationToken: cancellationToken);
                     return await DiplomadoCards.ToShow(stepContext, cancellationToken);
                 case "Maestria":
+                    await stepContext.Context.SendActivityAsync($"Puedes escribir la palabra ATRAS para volver a seleccionar el nivel de curso...", cancellationToken: cancellationToken);
                     return await MaestriaCards.ToShow(stepContext, cancellationToken);
                 case "Doctorado":
                     await stepContext.Context.SendActivityAsync("Actualmente no tenemos cursos disponibles para Doctorados...");
-                    return await stepContext.ContinueDialogAsync(cancellationToken: cancellationToken);
+                    return await stepContext.BeginDialogAsync(nameof(CursesDialog), cancellationToken: cancellationToken);
+                case "Atras":
+                    string summary2 = $"Puedo ayudarte con las siguiente opciones:" +
+                    $"{Environment.NewLine} *Consulta de cursos" +
+                    $"{Environment.NewLine} *Consulta de pagos" +
+                    $"{Environment.NewLine} *Atencion Personalizada" +
+                    $"{Environment.NewLine} *Preguntas Frecuentes sobre la EMI Posgrado";
+                    await stepContext.Context.SendActivityAsync(summary2, cancellationToken: cancellationToken);
+                    return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
                 default:
                     break;
             }
@@ -121,6 +134,7 @@ namespace PosgradoBot.Dialogs.Curses
             //await SaveQualification(stepContext, options);
 
             //original
+            
             return await stepContext.NextAsync(cancellationToken: cancellationToken);
         }
 

@@ -30,7 +30,7 @@ namespace PosgradoBot.Dialogs
         {
             return await stepContext.PromptAsync(
                  nameof(TextPrompt),
-                 new PromptOptions { Prompt = MessageFactory.Text("Escribe tu número de carnet") },
+                 new PromptOptions { Prompt = MessageFactory.Text("Ok. Necesito que escribas tu número de carnet para buscarlo: ") },
                  cancellationToken
              );
         }
@@ -38,6 +38,16 @@ namespace PosgradoBot.Dialogs
         private async Task<DialogTurnResult> ValidateOption(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             var options = stepContext.Context.Activity.Text;
+            var res = isNumber(options);
+
+            if (!res)
+            {
+                await stepContext.Context.SendActivityAsync($"Hey, en este campo solo se permite numeros...", cancellationToken: cancellationToken);
+                return await stepContext.ReplaceDialogAsync(nameof(PaysDialog), options: 0);
+            }
+
+
+            
             var payLast = await _databaseService.Pays.FirstOrDefaultAsync(x => x.ci == options);
             if (payLast != null)
             {
@@ -127,7 +137,14 @@ namespace PosgradoBot.Dialogs
                 }
             }
             await stepContext.Context.SendActivityAsync("Lo siento, no he podido encontrar tu numero de carnet en mi base de datos:", cancellationToken: cancellationToken);
+            await stepContext.Context.SendActivityAsync("¿En que más te puedo ayudar?", cancellationToken: cancellationToken);
             return await stepContext.ContinueDialogAsync(cancellationToken: cancellationToken);
+        }
+
+        private bool isNumber(string message)
+        {
+            bool isNumeric = int.TryParse(message, out int n);
+            return isNumeric;
         }
     }
 }

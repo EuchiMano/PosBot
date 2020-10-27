@@ -73,7 +73,7 @@ namespace PosgradoBot.Dialogs.Qualification
         private async Task<DialogTurnResult> ValidateOption(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             var options = stepContext.Context.Activity.Text;
-            await stepContext.Context.SendActivityAsync($"Gracias por tu {options}", cancellationToken : cancellationToken);
+            await stepContext.Context.SendActivityAsync($"Gracias por tus {options} ⭐", cancellationToken : cancellationToken);
             await Task.Delay(1000);
             await stepContext.Context.SendActivityAsync("¿En qué más te puedo ayudar?", cancellationToken: cancellationToken);
             //Save Qualification

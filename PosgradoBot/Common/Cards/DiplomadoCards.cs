@@ -21,7 +21,9 @@ namespace PosgradoBot.Common.Cards
                 },
                 cancellationToken
             );
+
             //await stepContext.Context.SendActivityAsync(activity: CreateCarousel(), cancellationToken);
+
         }
 
         private static Activity CreateCarousel()
@@ -30,7 +32,7 @@ namespace PosgradoBot.Common.Cards
             {
                 Title = "Diplomado en Educación Superior Universitaria a Distancia",
                 Subtitle = "Opciones",
-                Images = new List<CardImage> { new CardImage("https://posbotstorage.blob.core.windows.net/images/Curso.PNG") },
+                Images = new List<CardImage> { new CardImage("https://posbot1storage.blob.core.windows.net/cursos/Captura1.PNG") },
                 Buttons = new List<CardAction>()
                 {
                     new CardAction(){Title = "Más información", Value = "https://posbot1storage.blob.core.windows.net/cursos/DESD-10.pdf", Type = ActionTypes.DownloadFile},
@@ -42,7 +44,7 @@ namespace PosgradoBot.Common.Cards
             {
                 Title = "Diplomado en Planificación y Desarrollo de Competencias Profesionales en Educación Superior",
                 Subtitle = "Opciones",
-                Images = new List<CardImage> { new CardImage("https://posbotstorage.blob.core.windows.net/images/DiplomadoEduSup.PNG") },
+                Images = new List<CardImage> { new CardImage("https://posbot1storage.blob.core.windows.net/cursos/Captura2.PNG") },
                 Buttons = new List<CardAction>()
                 {
                     new CardAction(){Title = "Más información", Value = "https://posbot1storage.blob.core.windows.net/cursos/DPDCV-3_oficial.pdf", Type = ActionTypes.DownloadFile},
@@ -54,7 +56,7 @@ namespace PosgradoBot.Common.Cards
             {
                 Title = "Diplomado en Seguridad y Salud en el Trabajo",
                 Subtitle = "Opciones",
-                Images = new List<CardImage> { new CardImage("https://posbotstorage.blob.core.windows.net/images/DiplomadoEduSup.PNG") },
+                Images = new List<CardImage> { new CardImage("https://posbot1storage.blob.core.windows.net/cursos/Captura3.PNG") },
                 Buttons = new List<CardAction>()
                 {
                     new CardAction(){Title = "Más información", Value = "https://posbot1storage.blob.core.windows.net/cursos/DSST-3_%20oficial_.pdf", Type = ActionTypes.DownloadFile},

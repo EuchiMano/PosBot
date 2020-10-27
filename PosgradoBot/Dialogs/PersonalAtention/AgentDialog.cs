@@ -38,6 +38,7 @@ namespace PosgradoBot.Dialogs.PersonalAtention
         private async Task<DialogTurnResult> FinalProcess(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             var description = stepContext.Context.Activity.Text;
+            
 
             //Save Email
             var name = stepContext.Context.Activity.From.Name;
@@ -85,7 +86,8 @@ namespace PosgradoBot.Dialogs.PersonalAtention
                 );
             }
             await stepContext.Context.SendActivityAsync("Vale, vuelve a preguntar cuando gustes, estoy para ayudarte.", cancellationToken: cancellationToken);
-            return await stepContext.ContinueDialogAsync(cancellationToken: cancellationToken);
+            await stepContext.Context.SendActivityAsync("¿En qué más quieres que te ayude?", cancellationToken: cancellationToken);
+            return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
         }
 
         private async Task SendEmail(string name, string description)

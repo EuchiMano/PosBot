@@ -30,10 +30,10 @@ namespace PosgradoBot.Common.Cards
             {
                 Title = "Maestría en Administración de Empresas",
                 Subtitle = "Opciones",
-                Images = new List<CardImage> { new CardImage("https://posbot1storage.blob.core.windows.net/cursos/MAE-3_%20oficial.pdf") },
+                Images = new List<CardImage> { new CardImage("https://posbot1storage.blob.core.windows.net/cursos/Captura4.PNG") },
                 Buttons = new List<CardAction>()
                 {
-                    new CardAction(){Title = "Más información", Value = "https://posbotstorage.blob.core.windows.net/cursos/MAE-3_ oficial.pdf", Type = ActionTypes.DownloadFile},
+                    new CardAction(){Title = "Más información", Value = "https://posbot1storage.blob.core.windows.net/cursos/MAE-3_ oficial.pdf", Type = ActionTypes.DownloadFile},
                     new CardAction(){Title = "Preinscripción", Value = "Preinscripcion~31", Type = ActionTypes.PostBack},
                 }
             };
@@ -42,10 +42,10 @@ namespace PosgradoBot.Common.Cards
             {
                 Title = "Maestría en Recursos Naturales y Gestión Ambiental",
                 Subtitle = "Opciones",
-                Images = new List<CardImage> { new CardImage("https://posbot1storage.blob.core.windows.net/cursos/MAGA-4_oficial.pdf") },
+                Images = new List<CardImage> { new CardImage("https://posbot1storage.blob.core.windows.net/cursos/Captura5.PNG") },
                 Buttons = new List<CardAction>()
                 {
-                    new CardAction(){Title = "Más información", Value = "https://posbotstorage.blob.core.windows.net/cursos/MAGA-4_oficial.pdf", Type = ActionTypes.DownloadFile},
+                    new CardAction(){Title = "Más información", Value = "https://posbot1storage.blob.core.windows.net/cursos/MAGA-4_oficial.pdf", Type = ActionTypes.DownloadFile},
                     new CardAction(){Title = "Preinscripción", Value = "Preinscripcion~32", Type = ActionTypes.PostBack},
                 }
             };
@@ -54,10 +54,10 @@ namespace PosgradoBot.Common.Cards
             {
                 Title = "Maestría en Educación Superior Universitaria",
                 Subtitle = "Opciones",
-                Images = new List<CardImage> { new CardImage("https://posbot1storage.blob.core.windows.net/cursos/MESU-10_oficial.pdf") },
+                Images = new List<CardImage> { new CardImage("https://posbot1storage.blob.core.windows.net/cursos/Captura6.PNG") },
                 Buttons = new List<CardAction>()
                 {
-                    new CardAction(){Title = "Más información", Value = "https://posbotstorage.blob.core.windows.net/cursos/MESU-10_oficial.pdf", Type = ActionTypes.DownloadFile},
+                    new CardAction(){Title = "Más información", Value = "https://posbot1storage.blob.core.windows.net/cursos/MESU-10_oficial.pdf", Type = ActionTypes.DownloadFile},
                     new CardAction(){Title = "Preinscripción", Value = "Preinscripcion~33", Type = ActionTypes.PostBack},
                 }
             };
